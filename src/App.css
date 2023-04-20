@@ -1,0 +1,57 @@
+body {
+  background-color: #212529;
+  color: tomato;
+}
+
+.AddTable {
+  text-align: end;
+  font-size: larger;
+  
+}
+
+.AddTable .BTN_icon {
+  color: white;
+}
+
+.Be_BTN {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.BTN_icon {
+  border: none;
+  margin: 5px;
+  background-color: transparent;
+}
+
+.BTN {
+  background-color: tomato;
+  color: white;
+  border: 0;
+}
+
+.BTN:hover {
+  color: tomato;
+}
+
+.header a {
+  color: white !important;
+}
+
+.table-responsive {
+  margin: 10PX;
+}
+
+.footer {
+  background-color: #212529;
+  color: white;
+  margin-top: 50px;
+  padding-bottom: 30px;
+}
+
+.Footer_Button_Means {
+  font-size: small;
+  list-style: none;
+
+
+}
