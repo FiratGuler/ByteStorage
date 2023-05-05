@@ -1,52 +1,67 @@
-import React, { useEffect, useState } from 'react'
-import { Form, Button, Container } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
+import AlertWindow from "../Components/AlertWindow";
+import { Form, Button, Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { useSite } from "../context/SiteContext"
+
 
 export default function AuthMain() {
 
-  const [nick, setNick] = useState()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { Employees, setAdminCheck, setAlert } = useSite()
 
-  useEffect(() => {
-    localStorage.setItem('who', JSON.stringify(nick))
-  }, [nick])
 
-  // const loginhandle = () => {
-  //   if (nick === "admin") {
-  //     navigate('/admin')
-  //   }
-  //   else if (nick === "user") {
-  //     navigate('/user')
-  //   }
-  // }
 
-  return (
-    <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
-      
 
-       
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" onChange={(e) => setNick(e.target.value === "admin" ? "admin" : "user")} />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-            <div className='d-grid gap-2 d-md-flex justify-content-md-end'>
-              <Button variant="btn btn-outline-light" className='BTN' type="submit" onClick={()=>navigate("MainPage")}>
-                Log In
-              </Button>
-            </div>
-          </Form>
-        
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const Username = e.target.Username.value;
+    const password = e.target.password.value;
 
-      
+    const employee = Employees.find((data) => data.username === Username && data.password === password);
+
+    if (employee) {
+      await navigate('/MainPage', { replace: true });
+      if (employee.isAdmin === true) {
+        setAdminCheck(true)
+      }
+    } else {
+      setAlert((prevAlert) => [{ ...prevAlert[0], alertIsActive: true, alertMessage: "Username or Password wrong", situation: "danger" },])
+    }
+  };
+
+  console.log()
+
+  return (<>
+    <AlertWindow />
+
+    <Container className="min-vh-100 d-flex justify-content-center align-items-center relative">
+
+
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3 mail" controlId="formBasicEmail">
+          <Form.Label style={{ color: 'tomato' }}>Username</Form.Label>
+          <Form.Control type="text" name="Username" placeholder="Enter Username" />
+          <Form.Text className="text-muted">
+            If you are having problems,contact your manager.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label style={{ color: 'tomato' }}>Password</Form.Label>
+          <Form.Control type="password" name="password" placeholder="Password" />
+        </Form.Group>
+        <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+          <Button variant="btn btn-outline-light" className="BTN" type="submit">
+            Log In
+          </Button>
+        </div>
+      </Form>
+
+
+
     </Container>
-  )
+
+  </>
+  );
 }

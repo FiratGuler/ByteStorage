@@ -1,63 +1,69 @@
-import { useEffect, useState } from 'react'
-import { Container, Table } from 'react-bootstrap';
-
+import { Link, Route, Routes } from 'react-router-dom';
 import Footer from '../Components/Footer';
 import Header from "../Components/Header";
-import { Trash3, PencilFill, PlusSquare, FolderPlus, AlignCenter } from 'react-bootstrap-icons'
+import AddTablePanel from '../Components/ProductsPanels/AddTable';
+import { useEffect, useRef, useState } from 'react'
+import { Container, Row, Col, Button, Card, CardGroup } from 'react-bootstrap';
+import { FolderFill, FolderMinus } from 'react-bootstrap-icons'
+import { doc, deleteDoc } from "firebase/firestore";
+import db from "../DbConnection"
+import { useSite } from "../context/SiteContext"
+
 
 export default function Products() {
+  const { getTable, AllTables, setAllTables } = useSite()
 
-  const [products, setProducts] = useState([])
+
+
+  const getTableRef = useRef(getTable);
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json()) // axios eklenirse json parse etmeye gerek yok 
-      .then((data) => setProducts(data)) // axios ile gelen verinin içerisinden data alınması gerekiyor.
-      .catch((e) => console.log(e))
+    getTableRef.current();
   }, [])
 
+
+  const deleteTable = async (id) => {
+    try {
+      await deleteDoc(doc(db, "/Ana/admin1/Products", id));
+      setAllTables(AllTables.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error("Error deleting document: ", error);
+    }
+  };
 
   return (
     <>
       <Header />
-      <Container >
+      <Container>
+        <Row>
+          <Col>
+            <AddTablePanel />
+       
+          </Col>
+        </Row>
+        <Row className='mt-5'>
+          {AllTables.map((table) => (
+            <Col key={table.id} style={{ color: "white" }}>
+              <CardGroup>
+                <Card className='border-0' style={{ width: '13rem', backgroundColor: "#212529", alignItems: "center" }}>
 
-        <div className='AddTable'>
+                  <FolderFill style={{ fontSize: "50px" }} />
+                  <Card.Body>
+                    <Link to={`/table/${table.id}`}>
+                      <Card.Body>{table.name} </Card.Body>
+                    </Link>
+                    <Button variant='dark' className='float-end' onClick={() => deleteTable(table.id)}><FolderMinus /></Button>
+                  </Card.Body>
 
-          <button className='BTN_icon'>Add Table <FolderPlus /></button>
-        </div>
-        <div className='table-responsive'>
-          <Table className='table-light ' striped bordered hover size='sm'>
-            <thead >
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th onClick={() => console.log("test")} style={{ textAlign: 'center', width: '85px' }}><PlusSquare style={{ fontSize: "25px", cursor: 'pointer', }} />
-                </th>
-              </tr>
-            </thead>
-            <tbody >
-              {products.map((products) => (
-
-                <tr key={products.id}>
-                  <td>{products.id}</td>
-                  <td>{products.title.substring(0, 9)}</td>
-                  <td>{products.price}</td>
-                  <td>{products.category}</td>
-                  <td>
-                    <button className='BTN_icon'><PencilFill /></button>
-                    <button className='BTN_icon'><Trash3 /></button>
-
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
-
+                </Card>
+              </CardGroup>
+            </Col>
+          ))}
+        </Row>
       </Container>
       <Footer />
+      <Routes>
+        <Route path="/table/:id" />
+      </Routes>
     </>
   )
 }

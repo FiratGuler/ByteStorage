@@ -1,6 +1,6 @@
 body {
   background-color: #212529;
-  color: tomato;
+  /* color: tomato; */
 }
 
 .AddTable {
@@ -13,6 +13,9 @@ body {
   color: white;
 }
 
+.AddPerson_BTN{
+  border-radius: 8px;
+}
 .Be_BTN {
   font-size: 25px;
   cursor: pointer;

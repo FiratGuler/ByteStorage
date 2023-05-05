@@ -2,8 +2,8 @@ import AdminPage from "../Pages/MainPage";
 import AuthMain from "../Pages/AuthMain";
 import NotFoundPage from "../Pages/NotFoundPage";
 import Products from "../Pages/Products";
-import Personnel from "../Pages/Personnel";
-
+import Employees from "../Pages/Employees";
+import ProductTable from"../Components/ProductsPanels/ProductTable"
 
 const routes = [
     {
@@ -11,20 +11,25 @@ const routes = [
         element: <AuthMain />,
     },
     {
-        path: "MainPage",
+        path: "/MainPage",
         element: <AdminPage />,
     },
     {
-        path: "products",
+        path: "/products/*",
         element: <Products />,
     },
     {
-        path: "personnels",
-        element: <Personnel />,
+        path: "/table/:id",
+        element: <ProductTable />,
+    },
+    {
+        path: "/personnels/*",
+        element: <Employees />,
     },
     {
         path: "*",
-        element: <NotFoundPage />
-    }
-]
-export default routes
+        element: <NotFoundPage />,
+    },
+];
+
+export default routes;
