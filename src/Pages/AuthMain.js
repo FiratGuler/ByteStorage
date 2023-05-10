@@ -19,18 +19,24 @@ export default function AuthMain() {
     const password = e.target.password.value;
 
     const employee = Employees.find((data) => data.username === Username && data.password === password);
-
+    const name = Employees.find((data) => data.username === Username);
+   
     if (employee) {
+      localStorage.setItem('username', Username);
+      localStorage.setItem('name',name.nameSurname );
+
+
       await navigate('/MainPage', { replace: true });
       if (employee.isAdmin === true) {
         setAdminCheck(true)
+
       }
     } else {
       setAlert((prevAlert) => [{ ...prevAlert[0], alertIsActive: true, alertMessage: "Username or Password wrong", situation: "danger" },])
     }
   };
 
-  console.log()
+
 
   return (<>
     <AlertWindow />

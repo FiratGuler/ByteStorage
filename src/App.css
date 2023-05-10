@@ -6,16 +6,17 @@ body {
 .AddTable {
   text-align: end;
   font-size: larger;
-  
+
 }
 
 .AddTable .BTN_icon {
   color: white;
 }
 
-.AddPerson_BTN{
+.AddPerson_BTN {
   border-radius: 8px;
 }
+
 .Be_BTN {
   font-size: 25px;
   cursor: pointer;
@@ -55,6 +56,15 @@ body {
 .Footer_Button_Means {
   font-size: small;
   list-style: none;
+}
 
+.FileUpload {
+  margin-top: 20px;
+  background-color: antiquewhite;
+  border-radius: 20px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
 }

@@ -3,8 +3,8 @@ import Footer from '../Components/Footer'
 import AddPersonPanel from '../Components/EmployeesPanels/AddPersonPanel';
 import EditPersonPanel from '../Components/EmployeesPanels/EditPersonPanel';
 import { useState } from 'react'
-import { Container, Table } from 'react-bootstrap';
-import { PencilFill, PersonDash, PersonAdd, Check2 } from 'react-bootstrap-icons'
+import { Container, Table, Form, InputGroup } from 'react-bootstrap';
+import { PencilFill, PersonDash, PersonAdd, Check2,Search } from 'react-bootstrap-icons'
 import db from "../DbConnection"
 import { doc, deleteDoc } from "firebase/firestore";
 import { useSite } from "../context/SiteContext"
@@ -12,10 +12,10 @@ import AlertWindow from '../Components/AlertWindow';
 
 
 export default function Personnel() {
-  const { Employees, setEmployees, getPerson, setEditID,setAlert } = useSite()
+  const { Employees, setEmployees, getPerson, setEditID, setAlert } = useSite()
   const [addpanelShow, setAddPanelShow] = useState(false);
   const [editpanelShow, setEditPanelShow] = useState(false);
-
+  const [searchInput, setSearchInput] = useState("")
   const deletePerson = async (id) => {
     try {
       await deleteDoc(doc(db, "/Ana/admin1/personel", id));
@@ -40,6 +40,12 @@ export default function Personnel() {
       <EditPersonPanel show={editpanelShow} onHide={() => setEditPanelShow(false)} />
       <Container >
         <div className='table-responsive'>
+          <InputGroup className="mb-3">
+            <InputGroup.Text id="basic-addon1"><Search/></InputGroup.Text>
+            <Form.Control placeholder='Enter Search Name' type='text' value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
+          </InputGroup>
+       
+
           <Table className='table-light ' striped bordered hover size='sm'>
 
             <thead >
@@ -48,12 +54,12 @@ export default function Personnel() {
                 <th>Name & Surname</th>
                 <th>Username</th>
                 <th>Password</th>
-                <th onClick={() => setAddPanelShow(true)} style={{ textAlign: 'center', width: '123px' }}><PersonAdd className='Be_BTN' /></th>
+                <th onClick={() => setAddPanelShow(true)} style={{ textAlign: 'center', width: '123px' }} ><PersonAdd className='Be_BTN' /></th>
               </tr>
             </thead>
             <tbody >
 
-              {Employees.map((user) => (
+              {Employees.filter(table => table.nameSurname.toLowerCase().includes(searchInput)).map((user) => (
 
                 <tr key={user.id}>
                   <td style={{ textAlignLast: 'center' }}>{user.isAdmin ? <Check2 /> : ""}</td>

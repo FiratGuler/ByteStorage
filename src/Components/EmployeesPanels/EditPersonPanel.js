@@ -6,21 +6,23 @@ import { doc, updateDoc } from "firebase/firestore";
 
 
 export default function EditPersonPanel(props) {
-    
-    const { Employees, editID,setAlert,getPerson } = useSite()
+
+    const { Employees, editID, setAlert, getPerson } = useSite()
 
     const [nameSurname, setNameSurname] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [isAdmin, setIsAdmin] = useState("")
 
 
     useEffect(() => {
 
-   
+
         Employees.filter((user) => user.id === editID).map((data) => {
             setNameSurname(data.nameSurname);
             setUsername(data.username);
             setPassword(data.password);
+            setIsAdmin(data.isAdmin)
             return null;
         });
 
@@ -36,6 +38,7 @@ export default function EditPersonPanel(props) {
                 nameSurname: nameSurname,
                 username: username,
                 password: password,
+                isAdmin: isAdmin
             });
             await getPerson()
             setAlert((prevAlert) => [{ ...prevAlert[0], alertIsActive: true, alertMessage: "Edited employee !", situation: "warning" },])
@@ -87,6 +90,9 @@ export default function EditPersonPanel(props) {
                     <Form.Group className="mb-3">
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="text" value={password} onChange={e => setPassword(e.target.value)} />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                        <Form.Check type="checkbox" label="Should the admin be authorized?" checked={isAdmin} onChange={e => setIsAdmin(e.target.checked)} />
                     </Form.Group>
                     <Button className='btn btn-dark' type="submit" onClick={EditSubmit} >
                         Edit Confirm

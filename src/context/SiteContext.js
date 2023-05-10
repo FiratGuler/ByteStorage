@@ -14,7 +14,9 @@ const Provider = ({ children }) => {
         })
         setEmployees(data)
         console.log("Employess data read")
+  
     }
+
 
     const getTable = async () => {
         const querySnapshot = await getDocs(collection(db, "/Ana/admin1/Products"))
@@ -35,8 +37,10 @@ const Provider = ({ children }) => {
 
     const [Employees, setEmployees] = useState([])
     const [AllTables, setAllTables] = useState([]);
+    const [excelTable, setExcelTable] = useState([]);
     const [editID, setEditID] = useState([])
     const [adminCheck, setAdminCheck] = useState(false)
+    const [tableSearch, setTableSearch] = useState("")
     const [alert, setAlert] = useState([{
         alertIsActive: false,
         alertMessage: "test",
@@ -51,6 +55,8 @@ const Provider = ({ children }) => {
         editID, setEditID,
         alert, setAlert,
         tableCategory, setTableCategory,
+        tableSearch, setTableSearch,
+        excelTable, setExcelTable,
         getPerson,
         getTable,
     }

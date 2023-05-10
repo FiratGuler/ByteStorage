@@ -38,20 +38,6 @@ export default function Footer() {
 
                     </Col>
                 </Row>
-                {/* <Row>
-                    <Col>
-
-                        <ul className='Footer_Button_Means'>
-                            
-
-                        </ul>
-                    </Col>
-                    <Col>
-                        <ul className='Footer_Button_Means'>
-                            
-                        </ul>
-                    </Col> */}
-
 
             </Container>
         </footer >
